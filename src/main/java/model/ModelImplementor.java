@@ -38,21 +38,15 @@ public class ModelImplementor {
 	}
 
 	public boolean isMovePieceOk(Coord initCoord, Coord targetCoord, boolean isPieceToTake) {
-
 		PieceModel pieceToMove = this.findPiece(initCoord);
 		if (pieceToMove == null) return false;
 		return pieceToMove.isMoveOk(targetCoord, isPieceToTake);
 	}
 
-
 	public boolean movePiece(Coord initCoord, Coord targetCoord) {
-
 		PieceModel pieceToMove = this.findPiece(initCoord);
 		if (pieceToMove == null) return false;
-		PieceModel movedPiece = new PawnModel(targetCoord, pieceToMove.getPieceColor());
-		this.pieces.add(movedPiece);
-		this.pieces.remove(pieceToMove);
-
+		pieceToMove.move(targetCoord);
 		return true;
 	}
 

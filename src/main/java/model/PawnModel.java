@@ -13,52 +13,28 @@ public class PawnModel implements PieceModel{
 
 	public PawnModel(Coord coord, PieceSquareColor pieceColor) {
 		super();
-		// TODO Atelier 1
 		this.coord = coord ;
 		this.pieceColor = pieceColor ;
-
 	}
 
 	@Override
 	public char getColonne() {
-		char colonne = ' ';
-
-		// TODO Atelier 1
-		colonne = this.coord.getColonne();
-
-		return colonne;
+		return this.coord.getColonne();
 	}
 
 	@Override
 	public int getLigne() {
-		int ligne = -1;
-
-		// TODO Atelier 1
-		ligne = this.coord.getLigne();
-
-		return ligne;
+		return this.coord.getLigne();
 	}
 
 	@Override
 	public boolean hasThisCoord(Coord coord) {
-		boolean hasThisCoord = false;
-
-		// TODO Atelier 1
-		if (this.coord.getColonne() == coord.getColonne() && this.coord.getLigne() == coord.getLigne()){
-			hasThisCoord = true ;
-		}
-
-		return hasThisCoord;
+		return this.coord.equals(coord);
 	}
 
 	@Override
 	public PieceSquareColor getPieceColor() {
-		PieceSquareColor color = null;
-
-		// TODO Atelier 1
-		color = this.pieceColor;
-
-		return color;
+		return this.pieceColor;
 	}
 
 	/* (non-Javadoc)
@@ -71,51 +47,30 @@ public class PawnModel implements PieceModel{
 
 	@Override
 	public void move(Coord coord) {
-
-		// TODO Atelier 1
-		if (this.hasThisCoord(coord) == false){
+		if (!this.hasThisCoord(coord)) {
 			this.coord = coord;
 		}
-
 	}
 
 	@Override
 	public boolean isMoveOk(Coord targetCoord, boolean isPieceToCapture) {
-		boolean ret = false;
-		int deplacement = 0;
+		if (this.hasThisCoord(targetCoord)) return false;
 
-		// TODO Atelier 1
-		if (!this.hasThisCoord(targetCoord)){
-			// Si pas de piece a capturer alors déplacement de 1 sinon 2
-			if (!isPieceToCapture){
-				deplacement = 1;
-			}
-			else {
-				deplacement = 2 ;
-			}
-			// Vérifie que la case cible n'est pas en dehors du tableau
-			if (this.getLigne() - deplacement >= 1 && this.getLigne() + deplacement <=10
-				&& this.getColonne() - deplacement >= 'a' && this.getColonne() + deplacement <= 'j' ) {
+		// Si pas de piece a capturer alors déplacement de 1 sinon 2
+		int deplacement = isPieceToCapture ? 2 : 1;
 
-				if (this.getPieceColor() == PieceSquareColor.WHITE){
-					// Vérifie que la case cible correspond bien à une case autorisée en fonction de la couleur de la piece
-					if (this.getLigne() + deplacement == targetCoord.getLigne()
-							&& (this.getColonne() - deplacement == targetCoord.getColonne() || this.getColonne() + deplacement == targetCoord.getColonne()  )
-					){
-						return true ;
-					}
-				}
-				else {
-					if (this.getLigne() - deplacement == targetCoord.getLigne()
-							&& (this.getColonne() - deplacement == targetCoord.getColonne() || this.getColonne() + deplacement == targetCoord.getColonne()  )
-					){
-						return true ;
-					}
-				}
-			}
+		// Vérifie que la case cible n'est pas en dehors du tableau
+		if (!Coord.coordonnees_valides(targetCoord)) return false;
+
+		boolean isValidColumn = (this.getColonne() - deplacement == targetCoord.getColonne() ||
+				this.getColonne() + deplacement == targetCoord.getColonne());
+
+		if (this.getPieceColor() == PieceSquareColor.WHITE) {
+			// Vérifie que la case cible correspond bien à une case autorisée en fonction de la couleur de la piece
+			return (this.getLigne() + deplacement == targetCoord.getLigne() && isValidColumn);
 		}
 
-		return ret;
+		return (this.getLigne() - deplacement == targetCoord.getLigne() && isValidColumn);
 	}
 
 	@Override

@@ -92,16 +92,16 @@ public class ModelImplementor {
 		String st = "";
 		String[][] damier = new String[ModelConfig.LENGTH][ModelConfig.LENGTH];
 
-//		// création d'un tableau 2D avec les noms des pièces à partir de la liste de pièces
-//		for(PieceModel piece : this.pieces) {
-//
-//			PieceSquareColor color = piece.getPieceColor();
-//			String stColor = (PieceSquareColor.WHITE.equals(color) ? "--B--" : "--N--" );
-//
-//			int col = piece.getColonne() -'a';
-//			int lig = piece.getLigne() -1;
-//			damier[lig][col ] = stColor ;
-//		}
+		// création d'un tableau 2D avec les noms des pièces à partir de la liste de pièces
+		for(PieceModel piece : this.pieces) {
+
+			PieceSquareColor color = piece.getPieceColor();
+			String stColor = (PieceSquareColor.WHITE.equals(color) ? "--B--" : "--N--" );
+
+			int col = piece.getColonne() -'a';
+			int lig = piece.getLigne() -1;
+			damier[lig][col ] = stColor ;
+		}
 
 		// Affichage du tableau formatté
 		st = "     a      b      c      d      e      f      g      h      i      j\n";

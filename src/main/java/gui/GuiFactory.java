@@ -34,9 +34,9 @@ public class GuiFactory {
 	 * @return Une case noire ou blanche en alternance
 	 * la case en bas à gauche est noire
 	 */
-	public static BorderPane createSquare(int col, int ligne) {
-		
-		BorderPane square = null;
+	public static SquareGui createSquare(int col, int ligne) {
+
+		SquareGui square = null;
 		PieceSquareColor squareColor;
 
 		// sélection de la couleur de la case
@@ -45,7 +45,7 @@ public class GuiFactory {
 		} else {
 			squareColor = PieceSquareColor.BLACK;
 		}
-		square = new BorderPane();
+		square = new SquareGui(squareColor);
 		
 		// la couleur est définie par les valeurs par défaut de configuration
 		Color color = PieceSquareColor.BLACK.equals(squareColor) ? GuiConfig.CASEBLACK : GuiConfig.CASEWHITE;
@@ -61,10 +61,9 @@ public class GuiFactory {
 	 * @return une PieceGui si col/ligne correspond à cases noires
 	 * des 4 lignes du haut (piece noire) et du bas du damier (piece blanche)
 	 */
-	public static ImageView createPiece(int col, int ligne) {
+	public static PieceGui createPiece(int col, int ligne) {
 
-		ImageView pieceGui = null;
-		Image image = null;
+		PieceGui pieceGui = null;
 		PieceSquareColor pieceColor = null;
 
 		if  ( !((col % 2 == 0 && ligne % 2 == 0) || (col % 2 != 0 && ligne % 2 != 0)) ) {
@@ -74,9 +73,8 @@ public class GuiFactory {
 				pieceColor = PieceSquareColor.WHITE;
 		}
 		if (pieceColor != null) {
-			image = GuiFactory.createImage(pieceColor, true);
-			pieceGui = new ImageView();
-			pieceGui.setImage(image);
+			Image image = GuiFactory.createImage(pieceColor, true);
+			pieceGui = new PieceGui(image,pieceColor);
 		}
 
 		return pieceGui;

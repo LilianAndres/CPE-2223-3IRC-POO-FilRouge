@@ -25,7 +25,7 @@ class SquareGui extends BorderPane implements CheckersSquareGui {
 	private PieceSquareColor squareColor;    		// le carré est Noir ou Blanc
 
 	public SquareGui (PieceSquareColor squareColor) {
-		// ToDo Atelier 2
+		this.squareColor = squareColor;
 	}
 	
 	/**

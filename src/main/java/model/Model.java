@@ -138,8 +138,13 @@ public class Model implements BoardGame<Coord> {
 	 * @return les coord de la pièce à prendre, null sinon
 	 */
 	private Coord getToCapturePieceCoord(Coord toMovePieceCoord, Coord targetSquareCoord) {
-		Coord toCapturePieceCoord = null;
+		char column = (char)(Math.abs(toMovePieceCoord.getColonne() + targetSquareCoord.getColonne()) / 2);
+		int line = Math.abs(toMovePieceCoord.getLigne() + targetSquareCoord.getLigne()) / 2;
+		Coord toCapturePieceCoord = new Coord(column, line);
 
+		if (toCapturePieceCoord.equals(toMovePieceCoord) || toCapturePieceCoord.equals(targetSquareCoord)) {
+			return null;
+		}
 		return toCapturePieceCoord;
 	}
 

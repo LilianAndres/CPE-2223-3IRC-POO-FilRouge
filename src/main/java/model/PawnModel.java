@@ -6,43 +6,12 @@ import java.util.List;
 
 import nutsAndBolts.PieceSquareColor;
 
-public class PawnModel implements PieceModel{
-
-	private Coord coord;
-	private PieceSquareColor pieceColor;
-
+public class PawnModel extends AbstractPieceModel implements Promotable {
 	private int direction;
 
 	public PawnModel(Coord coord, PieceSquareColor pieceColor) {
-		super();
-		this.coord = coord;
-		this.pieceColor = pieceColor;
+		super(coord, pieceColor);
 		this.direction = PieceSquareColor.BLACK.equals(this.getPieceColor()) ? -1 : 1;
-	}
-
-	@Override
-	public char getColonne() {
-		return coord.getColonne();
-	}
-
-	@Override
-	public int getLigne() {
-		return coord.getLigne();
-	}
-
-	@Override
-	public boolean hasThisCoord(Coord coord) {
-		return this.coord.equals(coord);
-	}
-
-	@Override
-	public void move(Coord coord) {
-		this.coord = coord;
-	}
-
-	@Override
-	public PieceSquareColor getPieceColor() {
-		return pieceColor;
 	}
 
 	@Override
@@ -74,35 +43,12 @@ public class PawnModel implements PieceModel{
 	}
 
 	@Override
-	public List<Coord> getCoordsOnItinerary(Coord targetCoord) {
-
-		List<Coord> coordsOnItinery = new LinkedList<Coord>();
-
-		int ligDistance = targetCoord.getLigne() - this.getLigne();
-
-		if (ligDistance==1) return coordsOnItinery;
-
-		for (int i = 0 ; i < ligDistance-1 ; i++){
-			Coord c = null;
-			if (this.pieceColor == PieceSquareColor.WHITE){
-				c = new Coord((char) (this.getColonne() + i + 1 ),this.getLigne() + i + 1);
-			} else {
-				c = new Coord((char) (this.getColonne() - i - 1 ),this.getLigne() - i - 1);
-			}
-			coordsOnItinery.add(c);
-		}
-		System.out.println("fin getCoordsOnItinerary : ");
-		return coordsOnItinery;
+	public boolean isPromotable() {
+		return ((this.getPieceColor().equals(PieceSquareColor.WHITE) && this.getLigne() == 10)
+				|| (this.getPieceColor().equals(PieceSquareColor.BLACK) && this.getLigne() == 1));
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
-	public String toString() {
-		return " ["+pieceColor.toString().charAt(0) + coord + "]";
-	}
-
-
+	public void promote() {}
 }
 

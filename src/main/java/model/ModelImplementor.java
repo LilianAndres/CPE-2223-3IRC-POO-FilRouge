@@ -25,7 +25,6 @@ public class ModelImplementor {
 
 	public ModelImplementor() {
 		super();
-
 		pieces = ModelFactory.createPieceModelCollection();
 	}
 
@@ -48,7 +47,7 @@ public class ModelImplementor {
 		boolean isMovePieceOk = false;
 		PieceModel initPiece = this.findPiece(initCoord);
 		if (initPiece != null) {
-			isMovePieceOk = initPiece.isMoveOk(targetCoord, isPieceToTake ) ;
+			isMovePieceOk = initPiece.isMoveOk(targetCoord, isPieceToTake) ;
 		}
 		return isMovePieceOk;
 	}
@@ -68,11 +67,9 @@ public class ModelImplementor {
 	}
 
 	public void removePiece(Coord pieceToTakeCoord) {
-
-		// TODO Atelier 2
-
+		PieceModel pieceToTake = this.findPiece(pieceToTakeCoord);
+		if (pieceToTake != null) this.pieces.remove(pieceToTake);
 	}
-
 
 	public List<Coord> getCoordsOnItinerary(Coord initCoord, Coord targetCoord) {
 		List<Coord> coordsOnItinerary;
@@ -104,6 +101,25 @@ public class ModelImplementor {
 		return findPiece;
 	}
 
+	public boolean isPiecePromotable(Coord coord) {
+		boolean isPiecePromotable = false;
+		PieceModel piece = this.findPiece(coord);
+		if (piece != null && piece instanceof Promotable) {
+			Promotable toPromotePiece = (Promotable) piece;
+			isPiecePromotable = toPromotePiece.isPromotable();
+		}
+		return isPiecePromotable;
+	}
+
+
+	public void promotePiece(Coord coord) {
+		PieceModel piece = this.findPiece(coord);
+		if (piece != null) {
+			PieceSquareColor color = piece.getPieceColor();
+			this.pieces.remove(piece);
+			this.pieces.add(new QueenModel(coord, color));
+		}
+	}
 
 
 	/* (non-Javadoc)

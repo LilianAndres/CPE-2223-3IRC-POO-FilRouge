@@ -11,20 +11,23 @@ public class PawnModel implements PieceModel{
 	private Coord coord;
 	private PieceSquareColor pieceColor;
 
+	private int direction;
+
 	public PawnModel(Coord coord, PieceSquareColor pieceColor) {
 		super();
-		this.coord = coord ;
-		this.pieceColor = pieceColor ;
+		this.coord = coord;
+		this.pieceColor = pieceColor;
+		this.direction = PieceSquareColor.BLACK.equals(this.getPieceColor()) ? -1 : 1;
 	}
 
 	@Override
 	public char getColonne() {
-		return this.coord.getColonne();
+		return coord.getColonne();
 	}
 
 	@Override
 	public int getLigne() {
-		return this.coord.getLigne();
+		return coord.getLigne();
 	}
 
 	@Override
@@ -33,44 +36,41 @@ public class PawnModel implements PieceModel{
 	}
 
 	@Override
-	public PieceSquareColor getPieceColor() {
-		return this.pieceColor;
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "[" + pieceColor.toString().charAt(0) + coord + "]";
-	}
-
-	@Override
 	public void move(Coord coord) {
-		if (!this.hasThisCoord(coord)) {
-			this.coord = coord;
-		}
+		this.coord = coord;
+	}
+
+	@Override
+	public PieceSquareColor getPieceColor() {
+		return pieceColor;
 	}
 
 	@Override
 	public boolean isMoveOk(Coord targetCoord, boolean isPieceToCapture) {
-		if (this.hasThisCoord(targetCoord)) return false;
+		boolean ret = false;
+		System.out.println("isMoveOk !!!!");
+		System.out.println("isPieceToCapture :" + isPieceToCapture);
+		int colDistance = targetCoord.getColonne() - this.getColonne();
+		int ligDistance = targetCoord.getLigne() - this.getLigne();
+		int deltaLig = (int) Math.signum(ligDistance);
 
-		// Si pas de piece a capturer alors déplacement de 1 sinon 2
-		int deplacement = isPieceToCapture ? 2 : 1;
+		// Cas d'un d�placement en diagonale
+		if (Math.abs(colDistance) == Math.abs(ligDistance)){
 
-		// Vérifie que la case cible n'est pas en dehors du tableau
-		if (!Coord.coordonnees_valides(targetCoord)) return false;
-
-		boolean isValidColumn = (this.getColonne() - deplacement == targetCoord.getColonne() ||
-				this.getColonne() + deplacement == targetCoord.getColonne());
-
-		if (this.getPieceColor() == PieceSquareColor.WHITE) {
-			// Vérifie que la case cible correspond bien à une case autorisée en fonction de la couleur de la piece
-			return (this.getLigne() + deplacement == targetCoord.getLigne() && isValidColumn);
+			// sans prise
+			if (!isPieceToCapture) {
+				if (deltaLig == this.direction && Math.abs(colDistance) == 1) {
+					ret = true;
+				}
+			}
+			// avec prise
+			else {
+				if (Math.abs(colDistance) == 2) {
+					ret = true;
+				}
+			}
 		}
-
-		return (this.getLigne() - deplacement == targetCoord.getLigne() && isValidColumn);
+		return ret;
 	}
 
 	@Override
@@ -78,9 +78,29 @@ public class PawnModel implements PieceModel{
 
 		List<Coord> coordsOnItinery = new LinkedList<Coord>();
 
-		// TODO Atelier 2
+		int ligDistance = targetCoord.getLigne() - this.getLigne();
 
+		if (ligDistance==1) return coordsOnItinery;
+
+		for (int i = 0 ; i < ligDistance-1 ; i++){
+			Coord c = null;
+			if (this.pieceColor == PieceSquareColor.WHITE){
+				c = new Coord((char) (this.getColonne() + i + 1 ),this.getLigne() + i + 1);
+			} else {
+				c = new Coord((char) (this.getColonne() - i - 1 ),this.getLigne() - i - 1);
+			}
+			coordsOnItinery.add(c);
+		}
+		System.out.println("fin getCoordsOnItinerary : ");
 		return coordsOnItinery;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return " ["+pieceColor.toString().charAt(0) + coord + "]";
 	}
 
 

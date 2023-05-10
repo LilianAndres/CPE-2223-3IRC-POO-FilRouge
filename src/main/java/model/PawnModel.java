@@ -17,8 +17,6 @@ public class PawnModel extends AbstractPieceModel implements Promotable {
 	@Override
 	public boolean isMoveOk(Coord targetCoord, boolean isPieceToCapture) {
 		boolean ret = false;
-		System.out.println("isMoveOk !!!!");
-		System.out.println("isPieceToCapture :" + isPieceToCapture);
 		int colDistance = targetCoord.getColonne() - this.getColonne();
 		int ligDistance = targetCoord.getLigne() - this.getLigne();
 		int deltaLig = (int) Math.signum(ligDistance);

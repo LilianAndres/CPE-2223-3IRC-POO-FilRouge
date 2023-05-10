@@ -18,8 +18,6 @@ public class QueenModel extends AbstractPieceModel {
 
 	@Override
 	public boolean isMoveOk(Coord targetCoord, boolean isPieceToCapture) {
-		System.out.println("isMoveOk !!!!");
-		System.out.println("isPieceToCapture :" + isPieceToCapture);
 		int colDistance = targetCoord.getColonne() - this.getColonne();
 		int ligDistance = targetCoord.getLigne() - this.getLigne();
 		int deltaLig = (int) Math.signum(ligDistance);

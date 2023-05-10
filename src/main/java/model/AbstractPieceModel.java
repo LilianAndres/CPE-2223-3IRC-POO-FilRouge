@@ -56,7 +56,6 @@ public abstract class AbstractPieceModel implements PieceModel {
             }
             coordsOnItinery.add(c);
         }
-        System.out.println("fin getCoordsOnItinerary : ");
         return coordsOnItinery;
     }
 

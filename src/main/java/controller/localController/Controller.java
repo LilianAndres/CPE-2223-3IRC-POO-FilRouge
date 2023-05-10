@@ -114,7 +114,6 @@ public class Controller implements Mediator, BoardGame<Integer>, EventHandler<Mo
 	 * Ecoute les événements sur les SquareGui
 	 */
 	private void checkersSquareGuiHandle(MouseEvent mouseEvent) {
-		System.out.println("ici");
 		// Recherche SquareGUI sélectionné
 		CheckersSquareGui square = (CheckersSquareGui) mouseEvent.getSource();
 		int targetSquareIndex = square.getSquareCoord();

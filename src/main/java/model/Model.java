@@ -137,19 +137,23 @@ public class Model implements BoardGame<Coord> {
 	 * @return les coord de la pièce à prendre, null sinon
 	 */
 	private Coord getToCapturePieceCoord(Coord toMovePieceCoord, Coord targetSquareCoord) {
+		int colDistance = Math.abs(toMovePieceCoord.getColonne() - targetSquareCoord.getColonne());
+		int ligDistance = Math.abs(toMovePieceCoord.getLigne() - targetSquareCoord.getLigne());
+
+		if (colDistance != ligDistance || colDistance != 2) return null;
+
 		char column = (char)(Math.abs(toMovePieceCoord.getColonne() + targetSquareCoord.getColonne()) / 2);
 		int line = Math.abs(toMovePieceCoord.getLigne() + targetSquareCoord.getLigne()) / 2;
 		Coord toCapturePieceCoord = new Coord(column, line);
 
-		if (toCapturePieceCoord.equals(toMovePieceCoord) || toCapturePieceCoord.equals(targetSquareCoord)) {
-			return null;
-		}
+		if (!this.implementor.isPiecehere(toCapturePieceCoord)) return null;
+
 		return toCapturePieceCoord;
 	}
 
 	/**
-	 * @param initCoord
-	 * @param targetCoord
+	 * @param toMovePieceCoord
+	 * @param targetSquareCoord
 	 * @param isPieceToCapture
 	 * @return true si le déplacement est légal
 	 * (s'effectue en diagonale, avec ou sans prise)
@@ -158,7 +162,6 @@ public class Model implements BoardGame<Coord> {
 	 */
 	boolean isMovePiecePossible(Coord toMovePieceCoord, Coord targetSquareCoord, boolean isPieceToCapture) { // TODO : remettre en "private" après test unitaires
 		boolean isMovePossible = this.implementor.isMovePieceOk(toMovePieceCoord, targetSquareCoord, isPieceToCapture );
-		System.out.println("isMovePiecePossible " + isMovePossible);
 		return isMovePossible;
 	}
 
